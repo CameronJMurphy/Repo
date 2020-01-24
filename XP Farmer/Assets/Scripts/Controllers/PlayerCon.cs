@@ -15,10 +15,14 @@ public class PlayerCon : MonoBehaviour
 	public float pushBackSpeed; //this is triggered when hit by a monster
 	public float pushBackAmount;
 	private bool defenseMode;
+	private Animator walk;
+	private bool facingRight;
 
     // Start is called before the first frame update
     void Start()
     {
+		facingRight = true;
+		walk = GetComponent<Animator>();
 		defenseMode = false;
 		maxHealth = health;
 		PC = FindObjectOfType<PlayerCon>();
@@ -50,6 +54,7 @@ public class PlayerCon : MonoBehaviour
 		if (Input.GetKey(KeyCode.A))
 		{
 			PC.transform.position = PC.transform.position + (Vector3.left * movementSpeed * Time.deltaTime);//normal movement
+			FlipImage();
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.left * dashDistance * Time.deltaTime), dashSpeed);//dash
@@ -66,6 +71,7 @@ public class PlayerCon : MonoBehaviour
 		if (Input.GetKey(KeyCode.D))
 		{
 			PC.transform.position = PC.transform.position + (Vector3.right * movementSpeed * Time.deltaTime);//normal movement
+			FlipImage();
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.right * dashDistance * Time.deltaTime), dashSpeed);//dash
@@ -74,27 +80,34 @@ public class PlayerCon : MonoBehaviour
 		
 	}
 
+	private void FlipImage()
+	{
+		float horizontal = Input.GetAxis("Horizontal");
+		if (horizontal > 0 && !facingRight || horizontal < 0 && facingRight)
+		{
+			facingRight = !facingRight;
+			Vector3 flipedImage = gameObject.transform.localScale;
+			flipedImage.x *= -1;//flip the player model
+			gameObject.transform.localScale = flipedImage;
+		}
+	}
+
 	private void ModeCheck()
 	{
 		if (Input.GetMouseButton(1))//right mouse button
 		{
 			defenseMode = true;
 			weapon.gameObject.SetActive(false);
+			GetComponent<SpriteRenderer>().color = Color.cyan;
 		}
 		else
 		{
 			weapon.gameObject.SetActive(true);
 			defenseMode = false;
+			GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}
 
-	//private void AttackCheck()
-	//{
-	//	if (Input.GetKey(KeyCode.Space))
-	//	{
-	//		weapon.Attack(Timer);
-	//	}
-	//}
 
 	public void TakeDamage(int damage)
 	{
@@ -110,8 +123,9 @@ public class PlayerCon : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Enemy") && defenseMode == false) //in defense mode you cant take damage
 		{
-			TakeDamage(1);
-			transform.position = Vector3.Lerp(transform.position, (-1 * (collision.transform.position - transform.position)).normalized * pushBackAmount, pushBackSpeed); // this is a pushback when the player is hit
+			TakeDamage(collision.gameObject.GetComponent<IEnemy>().Damage()); //deal damge to the player = to the damage the enemy deals
+			
+			transform.position = Vector3.Lerp(transform.position, (transform.position - collision.transform.position).normalized * pushBackAmount, pushBackSpeed); // this is a pushback when the player is hit
 		}
 		
 	}

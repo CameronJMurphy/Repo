@@ -25,6 +25,7 @@ public class EnemyCon : MonoBehaviour
     void Update()
     {
 		Movement();
+		CheckForImageFlip();
 		CheckIfAlive();
 	}
 
@@ -32,13 +33,18 @@ public class EnemyCon : MonoBehaviour
 	{
 		foreach (IEnemy enemy in enemies)
 		{
-			if (!enemy.IsAlive())
+			enemy.IsAlive(); // this will set the dying status on your rat if its below 0 hp
+			if (enemy.IsDead())
 			{
-				enemy.gameObject.SetActive(false);
-				enemies.Remove(enemy);
 				FindObjectOfType<GameCon>().AddToScore(enemy.scoreValue);
+				enemies.Remove(enemy);
+				enemy.gameObject.SetActive(false);
 				nextWaveCheck();
 				break;
+			}
+			else 
+			{
+				enemy.DeathCheck(); //check to see if they need to start there death animations
 			}
 			
 		}
@@ -59,7 +65,10 @@ public class EnemyCon : MonoBehaviour
 	{
 		foreach (IEnemy enemy in enemies)
 		{
-			enemy.Move(player.transform.position);
+			if (!enemy.IsDying()) //if the monster isnt dying
+			{
+				enemy.Move(player.transform.position); //chase the player
+			}
 		}
 	}
 	public void AddToEnemies(IEnemy enemy)
@@ -67,4 +76,13 @@ public class EnemyCon : MonoBehaviour
 		enemies.Add(enemy);
 	}
 
+	private void CheckForImageFlip()
+	{
+		foreach (var enemy in enemies)
+		{
+			enemy.FlipImage(player.transform.position);
+		}
+	}
+
+	
 }
