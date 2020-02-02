@@ -35,8 +35,6 @@ public class PlayerCon : MonoBehaviour
     {
 		AliveStatus();
 		Movement();
-		ModeCheck();
-		//AttackCheck();
 	}
 
 	private void Movement()
@@ -92,22 +90,10 @@ public class PlayerCon : MonoBehaviour
 		}
 	}
 
-	private void ModeCheck()
+	public void SetDefending(bool _isDefending) //use to set defenseMode
 	{
-		if (Input.GetMouseButton(1))//right mouse button
-		{
-			defenseMode = true;
-			weapon.gameObject.SetActive(false);
-			GetComponent<SpriteRenderer>().color = Color.cyan;
-		}
-		else
-		{
-			weapon.gameObject.SetActive(true);
-			defenseMode = false;
-			GetComponent<SpriteRenderer>().color = Color.white;
-		}
+		defenseMode = _isDefending; 
 	}
-
 
 	public void TakeDamage(int damage)
 	{
@@ -121,14 +107,14 @@ public class PlayerCon : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.CompareTag("Enemy") && defenseMode == false) //in defense mode you cant take damage
+		if (collision.gameObject.CompareTag("Enemy") && defenseMode == false ) //in defense mode you cant take damage
 		{
 			TakeDamage(collision.gameObject.GetComponent<IEnemy>().Damage()); //deal damge to the player = to the damage the enemy deals
 			
 			transform.position = Vector3.Lerp(transform.position, (transform.position - collision.transform.position).normalized * pushBackAmount, pushBackSpeed); // this is a pushback when the player is hit
 		}
-		
 	}
+	
 	private void AliveStatus()
 	{
 		if(!IsAlive())

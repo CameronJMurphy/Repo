@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemySpawner.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IWeapon.cs" />
+    <Compile Include="Assets\Scripts\Shield.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/AIE/Cross_Platform/Repo/XP Farmer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
