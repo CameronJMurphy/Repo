@@ -8,21 +8,18 @@ public class PlayerCon : MonoBehaviour
 	private PlayerCon PC;
 	public IWeapon weapon;
 	public float movementSpeed;
-	[SerializeField][Range(0,1)] private float dashSpeed;
 	[SerializeField] private float dashDistance;
 	private int maxHealth;
 	[SerializeField] private int health;
 	public float pushBackSpeed; //this is triggered when hit by a monster
 	public float pushBackAmount;
 	private bool defenseMode;
-	private Animator walk;
 	private bool facingRight;
 
     // Start is called before the first frame update
     void Start()
     {
 		facingRight = true;
-		walk = GetComponent<Animator>();
 		defenseMode = false;
 		maxHealth = health;
 		PC = FindObjectOfType<PlayerCon>();
@@ -35,47 +32,29 @@ public class PlayerCon : MonoBehaviour
     {
 		AliveStatus();
 		Movement();
+		FlipImage();
 	}
 
 	private void Movement()
 	{
-		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0); // this stops the player sliding everywhere when the collide with otherthings
-		//on PC WASD movement
-		if (Input.GetKey(KeyCode.W))
+		//get the axis
+		float h_value = Input.GetAxis("Horizontal");
+		float v_value = Input.GetAxis("Vertical");
+		Vector3 direction = new Vector3(h_value, v_value,0);
+		//direction vector
+		direction *= Time.deltaTime * movementSpeed;
+		//apply vector to position
+		PC.transform.position += direction;
+		//check for dashes
+		if(Input.GetButtonDown("Dash"))
 		{
-			PC.transform.position = PC.transform.position + (Vector3.up * movementSpeed * Time.deltaTime);//normal movement
-			if(Input.GetKeyDown(KeyCode.Space)) 
-			{
-				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.up * dashDistance * Time.deltaTime), dashSpeed) ;//dash
-			}
+			PC.transform.position += direction.normalized * dashDistance;//dash
 		}
-		if (Input.GetKey(KeyCode.A))
-		{
-			PC.transform.position = PC.transform.position + (Vector3.left * movementSpeed * Time.deltaTime);//normal movement
-			FlipImage();
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.left * dashDistance * Time.deltaTime), dashSpeed);//dash
-			}
-		}
-		if (Input.GetKey(KeyCode.S))
-		{
-			PC.transform.position = PC.transform.position + (Vector3.down * movementSpeed * Time.deltaTime);//normal movement
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.down * dashDistance * Time.deltaTime), dashSpeed);//dash
-			}
-		}
-		if (Input.GetKey(KeyCode.D))
-		{
-			PC.transform.position = PC.transform.position + (Vector3.right * movementSpeed * Time.deltaTime);//normal movement
-			FlipImage();
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				PC.transform.position = Vector3.Lerp(PC.transform.position, PC.transform.position + (Vector3.right * dashDistance * Time.deltaTime), dashSpeed);//dash
-			}
-		}
-		
+		//Android movement
+		#if UNITY_ANDROID
+
+
+		#endif
 	}
 
 	private void FlipImage()
