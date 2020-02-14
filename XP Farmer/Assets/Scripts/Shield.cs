@@ -20,8 +20,7 @@ public class Shield : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //set the player to normal with there weapon
-        PC.weapon.gameObject.SetActive(true);
+        //set the player to normal
         PC.SetDefending(false);
         GetComponent<SpriteRenderer>().color = Color.white;
 

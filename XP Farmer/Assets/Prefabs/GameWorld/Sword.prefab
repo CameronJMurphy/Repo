@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5178446451773216007}
   - component: {fileID: 4889720707500877666}
-  - component: {fileID: 729252601}
   - component: {fileID: 729252602}
+  - component: {fileID: 729252601}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Weapon
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1064595718367320283}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.51, y: 0.99, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -46,20 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
---- !u!64 &729252601
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1064595718367320283}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
+  speed: 1000
 --- !u!212 &729252602
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -109,3 +96,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!136 &729252601
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064595718367320283}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 0.1
+  m_Direction: 1
+  m_Center: {x: 0.7, y: 0.7, z: 0}

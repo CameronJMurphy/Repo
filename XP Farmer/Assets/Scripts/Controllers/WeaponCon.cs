@@ -25,7 +25,7 @@ public class WeaponCon : MonoBehaviour
 			if (weapon.IsHeld())
 			{
 				weapon.FollowPlayer();
-				if (Input.GetKey(KeyCode.Space))
+				if (Input.GetMouseButtonDown(0))
 				{
 					weapon.Attack();
 				}
