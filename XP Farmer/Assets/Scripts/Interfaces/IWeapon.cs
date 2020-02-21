@@ -10,11 +10,16 @@ public class IWeapon : MonoBehaviour
 	private float angleIncrement;
 	private bool attacking;
 	private Vector2 mouseVecOnAttack;
+	private Vector2 joyVecOnAttack;
+	protected Joystick joystick;
+
 	private void Start()
 	{
 		angleIncrement = 0;
 		attacking = false;
 		gameObject.SetActive(false);
+		joystick = FindObjectOfType<Joystick>();
+
 	}
 
 	public void Attack()
@@ -26,6 +31,7 @@ public class IWeapon : MonoBehaviour
 			attacking = true;
 			gameObject.SetActive(true);
 			mouseVecOnAttack = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+			joyVecOnAttack = new Vector2(joystick.Vertical, joystick.Horizontal);
 		}
 		
 	}
@@ -43,11 +49,12 @@ public class IWeapon : MonoBehaviour
 		isHeld = false;
 	}
 
-	public void FollowPlayer() //called every update
+	public void UpdateWeapon() //called every update
 	{
 		if (!attacking)
 		{
 			Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+			//Vector2 direction = new Vector3(joystick.Vertical, joystick.Horizontal) + transform.position;
 			float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 			angle -= 45; //this is because the sprite is at a 45 degree angle
 			Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -62,6 +69,7 @@ public class IWeapon : MonoBehaviour
 			angleIncrement += speed * Time.deltaTime;
 			
 			float angle = Mathf.Atan2(mouseVecOnAttack.y, mouseVecOnAttack.x) * Mathf.Rad2Deg;
+			//float angle = Mathf.Atan2(joyVecOnAttack.y, joyVecOnAttack.x) * Mathf.Rad2Deg;
 			angle -= 90; //this is because the sprite is at a 45 degree angle and i want the attack start from a 45 behind
 			Quaternion rotation = Quaternion.AngleAxis(angle + angleIncrement, Vector3.forward);
 

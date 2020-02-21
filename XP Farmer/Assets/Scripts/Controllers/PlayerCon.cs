@@ -15,6 +15,8 @@ public class PlayerCon : MonoBehaviour
 	public float pushBackAmount;
 	private bool defenseMode;
 	private bool facingRight;
+	protected Joystick joystick;
+
 
     // Start is called before the first frame update
     void Start()
@@ -25,36 +27,51 @@ public class PlayerCon : MonoBehaviour
 		PC = FindObjectOfType<PlayerCon>();
 		weapon.PickUp();
 		IEnemy.isDefending += IsDefending;
+		joystick = FindObjectOfType<Joystick>();
+		DashScript.dash += Dash;
+		
     }
 
     // Update is called once per frame
     void Update()
     {
 		AliveStatus();
-		Movement();
+		MovementUpdate();
 		FlipImage();
 	}
 
-	private void Movement()
-	{
+	private void MovementUpdate()
+	{ 
 		//get the axis
 		float h_value = Input.GetAxis("Horizontal");
 		float v_value = Input.GetAxis("Vertical");
+		//get direction vector
 		Vector3 direction = new Vector3(h_value, v_value,0);
-		//direction vector
-		direction *= Time.deltaTime * movementSpeed;
-		//apply vector to position
-		PC.transform.position += direction;
+
 		//check for dashes
 		if(Input.GetButtonDown("Dash"))
 		{
-			PC.transform.position += direction.normalized * dashDistance;//dash
+			Dash(direction);
 		}
-		//Android movement
-		#if UNITY_ANDROID
-
-
+		#if UNITY_STANDALONE_WIN
+		//PC Walking
+		Walking(h_value, v_value);
 		#endif
+		#if UNITY_ANDROID
+		//Android Walking
+		Walking(joystick.Horizontal, joystick.Vertical);
+		#endif
+
+	}
+	
+	private void Walking(float horizontal, float vertical)
+	{
+		PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, vertical * movementSpeed * Time.deltaTime, 0);
+	}
+
+	private void Dash(Vector3 direction)
+	{
+		PC.transform.position += direction.normalized * dashDistance;
 	}
 
 	private void FlipImage()
@@ -86,6 +103,8 @@ public class PlayerCon : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		//We arent using velocity, so we reset it to make sure that collisions aren't applying unwanted velocity
+		PC.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 		if (collision.gameObject.CompareTag("Enemy") && defenseMode == false ) //in defense mode you cant take damage
 		{
 			TakeDamage(collision.gameObject.GetComponent<IEnemy>().Damage()); //deal damge to the player = to the damage the enemy deals

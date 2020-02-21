@@ -5,11 +5,12 @@ using UnityEngine;
 public class WeaponCon : MonoBehaviour
 {
 	private List<IWeapon> weapons;
-    // Start is called before the first frame update
-    void Start()
+	[SerializeField] private Joybutton attackButton;
+	// Start is called before the first frame update
+	void Start()
     {
 		weapons = new List<IWeapon>(FindObjectsOfType<IWeapon>());
-    }
+	}
 
     // Update is called once per frame
     void Update()
@@ -24,8 +25,8 @@ public class WeaponCon : MonoBehaviour
 			
 			if (weapon.IsHeld())
 			{
-				weapon.FollowPlayer();
-				if (Input.GetMouseButtonDown(0))
+				weapon.UpdateWeapon();
+				if (Input.GetMouseButtonDown(0) || attackButton.Pressed)
 				{
 					weapon.Attack();
 				}

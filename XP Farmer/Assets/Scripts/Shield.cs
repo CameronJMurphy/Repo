@@ -9,6 +9,7 @@ public class Shield : MonoBehaviour
     [SerializeField] private float shieldTime;
     [SerializeField] private float shieldCooldown;
     private bool shieldReady;
+    [SerializeField] private Joybutton shieldButton;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,7 @@ public class Shield : MonoBehaviour
 
         if (shieldReady)
         {   
-            if (Input.GetMouseButton(1))//right mouse button, then shield 
+            if (Input.GetMouseButton(1) || shieldButton.Pressed)//right mouse button, then shield 
             {
                 timer += Time.deltaTime;
                 PC.SetDefending(true);
