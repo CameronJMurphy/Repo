@@ -5,10 +5,11 @@ using UnityEngine;
 public class WeaponCon : MonoBehaviour
 {
 	private List<IWeapon> weapons;
-	[SerializeField] private Joybutton attackButton;
+	private PlayerCon PC;
 	// Start is called before the first frame update
 	void Start()
     {
+		PC = FindObjectOfType<PlayerCon>();
 		weapons = new List<IWeapon>(FindObjectsOfType<IWeapon>());
 	}
 
@@ -26,14 +27,22 @@ public class WeaponCon : MonoBehaviour
 			if (weapon.IsHeld())
 			{
 				weapon.UpdateWeapon();
-				if (Input.GetMouseButtonDown(0) || attackButton.Pressed)
+#if UNITY_STANDALONE_WIN
+				if (Input.GetMouseButtonDown(0))
 				{
 					weapon.Attack();
 				}
-				
+#endif
+#if UNITY_ANDROID
+				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) //because the user will often use two fingers
+				{
+					weapon.Attack();
+				}
+#endif
+
 			}
 
-			
+
 		}
 	}
 

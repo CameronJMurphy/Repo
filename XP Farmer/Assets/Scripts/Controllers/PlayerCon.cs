@@ -16,11 +16,14 @@ public class PlayerCon : MonoBehaviour
 	private bool defenseMode;
 	private bool facingRight;
 	protected Joystick joystick;
+	[SerializeField]protected Joybutton dashButton;
+	private bool joystickIsTouched;
 
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
+		joystickIsTouched = false;
 		facingRight = true;
 		defenseMode = false;
 		maxHealth = health;
@@ -28,7 +31,6 @@ public class PlayerCon : MonoBehaviour
 		weapon.PickUp();
 		IEnemy.isDefending += IsDefending;
 		joystick = FindObjectOfType<Joystick>();
-		DashScript.dash += Dash;
 		
     }
 
@@ -41,29 +43,46 @@ public class PlayerCon : MonoBehaviour
 	}
 
 	private void MovementUpdate()
-	{ 
+	{
+#if UNITY_STANDALONE_WIN
 		//get the axis
 		float h_value = Input.GetAxis("Horizontal");
 		float v_value = Input.GetAxis("Vertical");
 		//get direction vector
-		Vector3 direction = new Vector3(h_value, v_value,0);
+		Vector3 direction = new Vector3(h_value, v_value,0); //this is the direction of the player movement input
+		//PC Walking
+		Walking(h_value, v_value);
 
 		//check for dashes
 		if(Input.GetButtonDown("Dash"))
 		{
 			Dash(direction);
 		}
-		#if UNITY_STANDALONE_WIN
-		//PC Walking
-		Walking(h_value, v_value);
-		#endif
-		#if UNITY_ANDROID
+#endif
+#if UNITY_ANDROID
 		//Android Walking
+		Vector3 direction = new Vector3(joystick.Horizontal, joystick.Vertical, 0);
 		Walking(joystick.Horizontal, joystick.Vertical);
-		#endif
+		joystickIsTouched = false;
+		foreach (var touch in Input.touches)
+		{
+			if(Camera.main.ScreenToWorldPoint(touch.position) == joystick.transform.position)
+			{
+				joystickIsTouched = true;
+			}
+		}
+		if (dashButton.Pressed)
+		{
+			Dash(direction); //they dash in the direction of the joystick
+		}
+#endif
 
 	}
 	
+	public bool JoystickIsBeingUsed()
+	{
+		return joystickIsTouched;
+	}
 	private void Walking(float horizontal, float vertical)
 	{
 		PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, vertical * movementSpeed * Time.deltaTime, 0);

@@ -26,8 +26,9 @@ public class Shield : MonoBehaviour
         GetComponent<SpriteRenderer>().color = Color.white;
 
         if (shieldReady)
-        {   
-            if (Input.GetMouseButton(1) || shieldButton.Pressed)//right mouse button, then shield 
+        {
+#if UNITY_STANDALONE_WIN
+            if (Input.GetMouseButton(1))//right mouse button, then shield 
             {
                 timer += Time.deltaTime;
                 PC.SetDefending(true);
@@ -36,6 +37,16 @@ public class Shield : MonoBehaviour
                 
 
             }
+#endif
+#if UNITY_ANDROID
+            if (shieldButton.Pressed)//shield button, then shield 
+            {
+                timer += Time.deltaTime;
+                PC.SetDefending(true);
+                PC.weapon.gameObject.SetActive(false);
+                GetComponent<SpriteRenderer>().color = new Vector4(timer / shieldTime, 1, 1, 1); //cyan with a fade to white
+            }
+#endif
             if (timer > shieldTime) // let the player have the shield for a duration
             {
                 shieldReady = false;
