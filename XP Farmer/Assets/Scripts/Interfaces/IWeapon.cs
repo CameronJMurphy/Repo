@@ -16,13 +16,17 @@ public class IWeapon : MonoBehaviour
 	private Vector2 mouseVecOnAttack; ///< stores mouse vector2
 	private Vector2 joyVecOnAttack;
 	protected Joystick joystick;///< the joystick the player uses to move
+	private GameObject ground;
+	private GameObject pivot;
 
 	private void Start()
 	{
 		angleIncrement = 0;
 		attacking = false;
 		gameObject.SetActive(false);
-		joystick = FindObjectOfType<Joystick>(); 
+		joystick = FindObjectOfType<Joystick>();
+		ground = GameObject.FindGameObjectWithTag("Ground");
+		pivot = transform.parent.gameObject;
 
 	}
 
@@ -57,26 +61,39 @@ public class IWeapon : MonoBehaviour
 	{
 		if (!attacking)
 		{
-			Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-			float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-			angle -= 45; //this is because the sprite is at a 45 degree angle
-			Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+			//Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//RaycastHit info;
+			//if(ground.GetComponent<BoxCollider>().Raycast(mouseRay, out info, 10000))
+			//{
+			//	Vector3 direction = info.point - transform.position;
+			//	//Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+			//	float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+			//	angle -= 45; //this is because the sprite is at a 45 degree angle
+			//	Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed * Time.deltaTime);
-
-
+			//	transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed * Time.deltaTime);
+			//}
 			Debug.Log(angleIncrement);
 		}
 		if (attacking)
 		{
 			angleIncrement += speed * Time.deltaTime;
+			RaycastHit info;
+			Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			if (ground.GetComponent<BoxCollider>().Raycast(mouseRay, out info, 10000))
+			{
+				Vector3 direction = info.point - transform.position;
+				float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+				//if (FindObjectOfType<PlayerCon>().transform.localScale.x < 0)
+				//{
+				//	angle = -1 * angle;
+				//}
+				//angle -= 90; //this is because the sprite is at a 45 degree angle and i want the attack start from a 45 behind
+				Quaternion rotation = Quaternion.AngleAxis(-angle /*+ angleIncrement*/, Vector3.up); 
 
-			float angle = Mathf.Atan2(mouseVecOnAttack.y, mouseVecOnAttack.x) * Mathf.Rad2Deg;
-			angle -= 90; //this is because the sprite is at a 45 degree angle and i want the attack start from a 45 behind
-			Quaternion rotation = Quaternion.AngleAxis(angle + angleIncrement, Vector3.forward);
-
-			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed * Time.deltaTime);
-
+				pivot.transform.rotation = Quaternion.Slerp(pivot.transform.rotation, rotation, speed * Time.deltaTime);
+			}
+			
 			if (angleIncrement > 90) // full rotation
 			{
 				//reset

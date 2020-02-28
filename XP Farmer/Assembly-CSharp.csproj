@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Controllers\SpawnerCon.cs" />
     <Compile Include="Assets\Scripts\Controllers\WeaponCon.cs" />
     <Compile Include="Assets\Scripts\DashScript.cs" />
+    <Compile Include="Assets\Scripts\FollowObject.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemySpawner.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IWeapon.cs" />

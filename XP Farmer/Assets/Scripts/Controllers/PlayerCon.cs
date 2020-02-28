@@ -16,8 +16,9 @@ public class PlayerCon : MonoBehaviour
 	private bool defenseMode;
 	private bool facingRight;
 	protected Joystick joystick;
-	[SerializeField]protected Joybutton dashButton;
+	[SerializeField] protected Joybutton dashButton;
 	private bool joystickIsTouched;
+	[SerializeField]private Collider playArea;
 
 
 	// Start is called before the first frame update
@@ -61,7 +62,7 @@ public class PlayerCon : MonoBehaviour
 #endif
 #if UNITY_ANDROID
 		//Android Walking
-		Vector3 direction = new Vector3(joystick.Horizontal, joystick.Vertical, 0);
+		Vector3 direction = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
 		Walking(joystick.Horizontal, joystick.Vertical);
 		joystickIsTouched = false;
 		foreach (var touch in Input.touches)
@@ -85,13 +86,26 @@ public class PlayerCon : MonoBehaviour
 	}
 	private void Walking(float horizontal, float vertical)
 	{
-		//PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, vertical * movementSpeed * Time.deltaTime, 0);
-		PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, 0, vertical * movementSpeed * Time.deltaTime);
+		Vector3 temp = PC.transform.position + new Vector3(horizontal * movementSpeed * Time.deltaTime, 0, vertical * movementSpeed * Time.deltaTime);
+		if(WithinBounds(temp))
+		{
+			PC.transform.position = temp;
+		}
+		//PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, 0, vertical * movementSpeed * Time.deltaTime);
 	}
 
+	private bool WithinBounds(Vector3 v)
+	{
+		return playArea.bounds.Contains(v);
+	}
 	private void Dash(Vector3 direction)
 	{
-		PC.transform.position += direction.normalized * dashDistance;
+		Vector3 temp = PC.transform.position + direction.normalized * dashDistance;
+		if (WithinBounds(temp))
+		{
+			PC.transform.position = temp;
+		}
+		//PC.transform.position += direction.normalized * dashDistance;
 	}
 
 	private void FlipImage()
