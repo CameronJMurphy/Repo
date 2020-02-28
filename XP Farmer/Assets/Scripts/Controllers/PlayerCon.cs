@@ -49,7 +49,7 @@ public class PlayerCon : MonoBehaviour
 		float h_value = Input.GetAxis("Horizontal");
 		float v_value = Input.GetAxis("Vertical");
 		//get direction vector
-		Vector3 direction = new Vector3(h_value, v_value,0); //this is the direction of the player movement input
+		Vector3 direction = new Vector3(h_value, 0, v_value); //this is the direction of the player movement input
 		//PC Walking
 		Walking(h_value, v_value);
 
@@ -85,7 +85,8 @@ public class PlayerCon : MonoBehaviour
 	}
 	private void Walking(float horizontal, float vertical)
 	{
-		PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, vertical * movementSpeed * Time.deltaTime, 0);
+		//PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, vertical * movementSpeed * Time.deltaTime, 0);
+		PC.transform.position += new Vector3(horizontal * movementSpeed * Time.deltaTime, 0, vertical * movementSpeed * Time.deltaTime);
 	}
 
 	private void Dash(Vector3 direction)

@@ -7,7 +7,7 @@ public class WeaponCon : MonoBehaviour
 	private List<IWeapon> weapons;
 	private PlayerCon PC;
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
 		PC = FindObjectOfType<PlayerCon>();
 		weapons = new List<IWeapon>(FindObjectsOfType<IWeapon>());
