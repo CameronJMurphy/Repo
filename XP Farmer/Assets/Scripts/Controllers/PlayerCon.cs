@@ -19,11 +19,13 @@ public class PlayerCon : MonoBehaviour
 	[SerializeField] protected Joybutton dashButton;
 	private bool joystickIsTouched;
 	[SerializeField]private Collider playArea;
+	private bool heldDown;
 
 
 	// Start is called before the first frame update
 	void Start()
     {
+		heldDown = false;
 		joystickIsTouched = false;
 		facingRight = true;
 		defenseMode = false;
@@ -72,9 +74,14 @@ public class PlayerCon : MonoBehaviour
 				joystickIsTouched = true;
 			}
 		}
-		if (dashButton.Pressed)
+		if (dashButton.Pressed && heldDown == false)
 		{
+			heldDown = true;
 			Dash(direction); //they dash in the direction of the joystick
+		}
+		if(!dashButton.Pressed)
+		{
+			heldDown = false;
 		}
 #endif
 
@@ -143,7 +150,7 @@ public class PlayerCon : MonoBehaviour
 		{
 			TakeDamage(collision.gameObject.GetComponent<IEnemy>().Damage()); //deal damge to the player = to the damage the enemy deals
 			
-			transform.position = Vector3.Lerp(transform.position, (transform.position - collision.transform.position).normalized * pushBackAmount, pushBackSpeed); // this is a pushback when the player is hit
+			//transform.position = Vector3.Lerp(transform.position, (transform.position - collision.transform.position).normalized * pushBackAmount, pushBackSpeed); // this is a pushback when the player is hit
 		}
 	}
 	

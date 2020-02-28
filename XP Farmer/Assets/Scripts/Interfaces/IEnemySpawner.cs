@@ -14,7 +14,7 @@ public class IEnemySpawner : MonoBehaviour
 	}
 	public void Spawn()
 	{
-		IEnemy creature = Instantiate(enemy, transform.position + new Vector3(Random.Range(-4, 4), Random.Range(-4,4), 0), Quaternion.identity);
+		IEnemy creature = Instantiate(enemy, transform.position + new Vector3(Random.Range(-4, 4) , 0, Random.Range(-4, 4)), Quaternion.identity);
 		enemyCon.AddToEnemies(creature);
 	}
 

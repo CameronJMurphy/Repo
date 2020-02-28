@@ -19,7 +19,6 @@ public class Joybutton : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     // Update is called once per frame
     void Update()
     {
-        
     }
 
 
