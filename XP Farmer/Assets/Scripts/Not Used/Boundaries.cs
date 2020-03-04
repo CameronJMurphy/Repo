@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// NOT USED IN THIS PROJECT
+/// </summary>
 public class Boundaries : MonoBehaviour
 {
     public Camera MainCamera;

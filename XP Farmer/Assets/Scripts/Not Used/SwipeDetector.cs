@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+/// <summary>
+/// not used in this project
+/// </summary>
 //reference https://www.youtube.com/watch?v=jbFYYbu5bdc
 public class SwipeDetector : MonoBehaviour
 {

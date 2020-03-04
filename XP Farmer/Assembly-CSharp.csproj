@@ -71,20 +71,20 @@
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FixedJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\FloatingJoystick.cs" />
     <Compile Include="Assets\Joystick Pack\Scripts\Joysticks\VariableJoystick.cs" />
-    <Compile Include="Assets\Scripts\Boundaries.cs" />
     <Compile Include="Assets\Scripts\Controllers\EnemyCon.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameCon.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerCon.cs" />
     <Compile Include="Assets\Scripts\Controllers\SpawnerCon.cs" />
     <Compile Include="Assets\Scripts\Controllers\WeaponCon.cs" />
-    <Compile Include="Assets\Scripts\DashScript.cs" />
     <Compile Include="Assets\Scripts\FollowObject.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemySpawner.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IWeapon.cs" />
+    <Compile Include="Assets\Scripts\Not Used\Boundaries.cs" />
+    <Compile Include="Assets\Scripts\Not Used\DashScript.cs" />
+    <Compile Include="Assets\Scripts\Not Used\SwipeDetector.cs" />
+    <Compile Include="Assets\Scripts\Not Used\SwipeLogger.cs" />
     <Compile Include="Assets\Scripts\Shield.cs" />
-    <Compile Include="Assets\Scripts\SwipeDetector.cs" />
-    <Compile Include="Assets\Scripts\SwipeLogger.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/AIE/Cross_Platform/Repo/XP Farmer/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

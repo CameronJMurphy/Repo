@@ -59,42 +59,24 @@ public class IWeapon : MonoBehaviour
 
 	public void UpdateWeapon() /// called every update, it updates the position of weapon based on mouse pos
 	{
-		if (!attacking)
+		if (attacking) /// if player is attack
 		{
-			//Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-			//RaycastHit info;
-			//if(ground.GetComponent<BoxCollider>().Raycast(mouseRay, out info, 10000))
-			//{
-			//	Vector3 direction = info.point - transform.position;
-			//	//Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-			//	float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-			//	angle -= 45; //this is because the sprite is at a 45 degree angle
-			//	Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-			//	transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed * Time.deltaTime);
-			//}
-			Debug.Log(angleIncrement);
-		}
-		if (attacking)
-		{
-			angleIncrement += speed * Time.deltaTime;
+			angleIncrement += speed * Time.deltaTime; ///add to our angleIncrement var
+			///apply raycast from the touch on the screen or mouse to the ground
 			RaycastHit info;
 			Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 			if (ground.GetComponent<BoxCollider>().Raycast(mouseRay, out info, 10000))
 			{
+				///setup diection vector and angle
 				Vector3 direction = info.point - transform.position;
 				float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-				//if (FindObjectOfType<PlayerCon>().transform.localScale.x < 0)
-				//{
-				//	angle = -1 * angle;
-				//}
-				//angle -= 90; //this is because the sprite is at a 45 degree angle and i want the attack start from a 45 behind
-				Quaternion rotation = Quaternion.AngleAxis(-angle /*+ angleIncrement*/, Vector3.up); 
 
+				///apply roation to the weapons pivot
+				Quaternion rotation = Quaternion.AngleAxis(-angle + angleIncrement, Vector3.up);
 				pivot.transform.rotation = Quaternion.Slerp(pivot.transform.rotation, rotation, speed * Time.deltaTime);
 			}
 			
-			if (angleIncrement > 90) // full rotation
+			if (angleIncrement > 45) // full rotation
 			{
 				//reset
 				attacking = false;
@@ -103,7 +85,7 @@ public class IWeapon : MonoBehaviour
 			}
 		}
 
-		transform.position = FindObjectOfType<PlayerCon>().transform.position;
+		transform.position = FindObjectOfType<PlayerCon>().transform.position; ///have the weapon follow the player
 	}
 
 	public int Damage()///returns damage variable

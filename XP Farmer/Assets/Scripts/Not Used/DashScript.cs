@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Not used in this project
+/// </summary>
 public class DashScript : MonoBehaviour
 {
     //public delegate void Dash(Vector3 direction);

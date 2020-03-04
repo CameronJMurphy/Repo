@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// This is not used in this project
+/// </summary>
 public class SwipeLogger : MonoBehaviour
 {
     void Awake()
